@@ -2,6 +2,26 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/config-interface" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/container-helper-base" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/data-container-interface" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/file-finder-abstract" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/invocable-interface" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/module-interface" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dhii/wp-events" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/phing/phing" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/container" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/rebelcode/modular" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/rebelcode/module-iterator-abstract" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/config" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/console" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/debug" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/event-dispatcher" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/filesystem" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/finder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/process" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/stopwatch" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/yaml" vcs="Git" />
   </component>
 </project>
