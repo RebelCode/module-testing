@@ -22,7 +22,7 @@ function rcmodGenServicesTests()
 
     $namespace  = isset($opts['namespace']) ? $opts['namespace'] : 'RebelCode';
     $moduleFqn  = isset($opts['module']) ? $opts['module'] : 'Module';
-    $outputFile = isset($opts['o']) ? $opts['o'] : getcwd().'/test/functional/ModuleServicesTest.php';
+    $outputFile = isset($opts['o']) ? $opts['o'] : getcwd().'/test/functional/ModuleTest.php';
 
     $configFile = getcwd() . DIRECTORY_SEPARATOR . 'config.php';
     $servicesFile = getcwd() . DIRECTORY_SEPARATOR . 'services.php';
