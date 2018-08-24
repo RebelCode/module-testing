@@ -41,11 +41,13 @@ class CompositeContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
+     * @param ContainerInterface|null $c The container to use for instantiating services.
+     *
      * @throws NotFoundException If the service with the given key was not found.
      */
-    public function get($key)
+    public function get($key, $c = null)
     {
-        return $this->_findContainerForService($key)->get($key);
+        return $this->_findContainerForService($key)->get($key, $c === null ? $this : $c);
     }
 
     /**

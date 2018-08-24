@@ -48,10 +48,12 @@ class DiContainerStub implements ContainerInterface
      * {@inheritdoc}
      *
      * @since [*next-version*]
+     *
+     * @param ContainerInterface|null $c The container to use for instantiating services.
      */
-    public function get($key)
+    public function get($key, $c = null)
     {
-        return $this->_resolveService($key);
+        return $this->_resolveService($key, $c === null ? $this : $c);
     }
 
     /**
@@ -69,13 +71,14 @@ class DiContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param string $key The key of the service to resolved.
+     * @param string             $key The key of the service to resolved.
+     * @param ContainerInterface $c   The container to use for instantiating services.
      *
      * @return mixed The service instance.
      *
      * @throws NotFoundException If service with given key was not found.
      */
-    protected function _resolveService($key)
+    protected function _resolveService($key, $c)
     {
         if (!array_key_exists($key, $this->services)) {
             if (!array_key_exists($key, $this->definitions)) {
@@ -83,7 +86,7 @@ class DiContainerStub implements ContainerInterface
             }
 
             $service = is_callable($this->definitions[$key])
-                ? call_user_func_array($this->definitions[$key], [$this])
+                ? call_user_func_array($this->definitions[$key], [$c])
                 : $this->definitions[$key];
 
             $this->services[$key] = $service;
