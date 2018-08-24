@@ -1,17 +1,13 @@
 # RebelCode - Modular Testing
 
-[![Build Status](https://travis-ci.org/rebelcode/modular-testing.svg?branch=master)](https://travis-ci.org/rebelcode/modular-testing)
-[![Code Climate](https://codeclimate.com/github/rebelcode/modular-testing/badges/gpa.svg)](https://codeclimate.com/github/rebelcode/modular-testing)
-[![Test Coverage](https://codeclimate.com/github/rebelcode/modular-testing/badges/coverage.svg)](https://codeclimate.com/github/rebelcode/modular-testing/coverage)
 [![Latest Stable Version](https://poser.pugx.org/rebelcode/modular-testing/version)](https://packagist.org/packages/rebelcode/modular-testing)
 
-A set of tools - such as custom test cases, common mocking and class stubs - that aid the testing of RebelCode modules.
-Also includes a test generator for quickly generating tests for modules.
+A set of tools - such as custom test cases, assertions, mock helpers and class stubs - that aid the testing of
+RebelCode modules. Also includes a test generator for quickly generating tests for modules!
 
 # Custom Test Case
 
-The `ModuleTestCase` is an extended PHPUnit test case that provides mocking functionality that is common for testing RebelCode modules.
-
+The `ModuleTestCase` is an extended PHPUnit test case that provides all of the helper functionality in this package.
 To use, simply extend it for your test case:
 
 ```php
