@@ -122,7 +122,7 @@ return [
      * @return Nonce;
      */
     'nonce' =>  function (ContainerInterface $c) {
-       return Nonce();
+       return new Nonce();
     },
     /**
      * Alias Works!
@@ -130,15 +130,13 @@ return [
      * @return EF
      */
      'event_factory' => function (ContainerInterface $c) {
-        return EF();
+        return new EF();
      },
      /**
       * No return tag - this service will not be type-tested
-      *
-      * @return EF
       */
       'event_factory_2' => function (ContainerInterface $c) {
-         return EF();
+         return new EF();
       },
       /*
        * Not a doc comment - this service will not be type-tested
@@ -146,7 +144,7 @@ return [
        * @return EF
        */
       'event_factory_3' => function (ContainerInterface $c) {
-         return EF();
+         return new EF();
       },
 ];
 ```
