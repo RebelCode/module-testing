@@ -99,10 +99,7 @@ function renderServicesTest($namespace, $moduleFqn, $services, $config)
 
 namespace $namespace;
 
-use Dhii\Exception\CreateInvalidArgumentExceptionCapableTrait;
-use Dhii\I18n\StringTranslatingTrait;
 use Dhii\Modular\Module\ModuleInterface;
-use Dhii\Util\Normalization\NormalizeArrayCapableTrait;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use RebelCode\Modular\Testing\ModuleTestCase;
 
@@ -113,12 +110,6 @@ use RebelCode\Modular\Testing\ModuleTestCase;
  */
 class {$moduleShortName}Test extends ModuleTestCase
 {
-    use NormalizeArrayCapableTrait;
-    
-    use CreateInvalidArgumentExceptionCapableTrait;
-    
-    use StringTranslatingTrait;
-
     /**
      * The fully qualified name of the module to test.
      *
@@ -126,6 +117,10 @@ class {$moduleShortName}Test extends ModuleTestCase
      */
     const MODULE_CLASS_FQN = '$moduleFqn';
     
+EOT;
+
+    if (count($configKeys) > 0) :
+        echo <<<EOT
     /**
      * Tests the `setup()` method to assert whether the resulting container contains the config.
      *
@@ -134,7 +129,7 @@ class {$moduleShortName}Test extends ModuleTestCase
     public function testSetupConfig()
     {
         /* @var \$module MockObject|ModuleInterface */
-        \$module     = \$this->createModule(static::MODULE_CLASS_FQN);
+        \$module  = \$this->createModule(static::MODULE_CLASS_FQN);
 
 EOT;
         foreach ($configKeys as $key) {
@@ -151,8 +146,9 @@ EOT;
         echo <<<EOT
     }
 EOT;
+    endif;
 
-    foreach ($services as $key => $type) {
+    foreach ($services as $key => $type) :
         $keyParts     = explode('_', $key);
         $keyPartsUc   = array_map('ucfirst', $keyParts);
         $keyCamelCase = implode('', $keyPartsUc);
@@ -167,14 +163,14 @@ EOT;
     public function testSetup{$keyCamelCase}()
     {
         /* @var \$module MockObject|ModuleInterface */
-        \$module     = \$this->createModule(static::MODULE_CLASS_FQN);
+        \$module = \$this->createModule(static::MODULE_CLASS_FQN);
         
         \$this->assertModuleHasService('{$key}', '{$type}', \$module, [
             /* Add mocked dependency services here */
         ]);
     }
 EOT;
-    }
+    endforeach;
 
     echo "\n}\n";
 
