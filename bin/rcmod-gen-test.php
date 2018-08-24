@@ -135,22 +135,16 @@ class {$moduleShortName}Test extends ModuleTestCase
     {
         /* @var \$module MockObject|ModuleInterface */
         \$module     = \$this->createModule(static::MODULE_CLASS_FQN);
-        \$container = \$module->setup();
 
 EOT;
         foreach ($configKeys as $key) {
             $val = var_export($config[$key], true);
             echo <<<EOT
 
-        \$this->assertTrue(
-            \$container->has('{$key}'),
-            'Container does not have config with key "{$key}"'
-        );
-
-        \$this->assertEquals(
+        \$this->assertModuleHasConfig(
+            '{$key}',
             {$val},
-            \$this->_normalizeArray(\$container->get('{$key}')),
-            'Container has invalid value for config with key "{$key}"'
+            \$module
         );
 EOT;
         }
@@ -174,21 +168,10 @@ EOT;
     {
         /* @var \$module MockObject|ModuleInterface */
         \$module     = \$this->createModule(static::MODULE_CLASS_FQN);
-        \$mContainer = \$module->setup();
-        \$container  = \$this->mockCompositeContainer([
-            \$mContainer,
-            \$this->mockContainer([
-                /* Add mocked dependency services here */
-            ])
-        ]);
         
-        \$service = \$container->get('$key');
-    
-        \$this->assertInstanceOf(
-            '{$type}',
-            \$service,
-            'Service "{$key}" is not a "{$type}" instance.'
-        );
+        \$this->assertModuleHasService('{$key}', '{$type}', \$module, [
+            /* Add mocked dependency services here */
+        ]);
     }
 EOT;
     }
