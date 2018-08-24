@@ -1,6 +1,6 @@
-# RebelCode - Modular Testing
+# RebelCode - Module Testing
 
-[![Latest Stable Version](https://poser.pugx.org/rebelcode/modular-testing/version)](https://packagist.org/packages/rebelcode/modular-testing)
+[![Latest Stable Version](https://poser.pugx.org/rebelcode/module-testing/version)](https://packagist.org/packages/rebelcode/module-testing)
 
 A set of tools - such as custom test cases, assertions, mock helpers and class stubs - that aid the testing of
 RebelCode modules. Also includes a test generator for quickly generating tests for modules!
