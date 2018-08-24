@@ -113,7 +113,7 @@ class ModuleTestCase extends TestCase
         $builder->disableOriginalConstructor();
 
         /* @var AbstractBaseModule */
-        $mock    = $builder->getMock();
+        $mock    = $builder->getMockForAbstractClass();
         $reflect = $this->reflect($mock);
 
         $reflect->_initModule(
@@ -123,7 +123,7 @@ class ModuleTestCase extends TestCase
             $this->mockContainerFactory(),
             $this->mockCompositeContainerFactory()
         );
-        $reflect->_initEvents(
+        $reflect->_initModuleEvents(
             $this->mockEventManager(),
             $this->mockEventFactory()
         );
