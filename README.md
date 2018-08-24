@@ -31,40 +31,45 @@ class MyTest extends ModuleTestCase
 
 Creates a module instance for the module with the given FQN (`$fqn`), key (`$key`) and dependencies (`$deps`), as well
 as mocked config, container and composite container factories. The module is also initialized with a mocked event
-manager and mocked event factory, if it requires them. 
+manager and mocked event factory, if it requires them.
 
-`mockContainer($data)`
+### Assertion Helpers
 
-Creates a mocked container instance, that can also instantiate and cache services if given callable values.  
+`assertModuleHasConfig($key, $value, $module)`
 
-`mockCompositeContainer($containers)`
+Asserts that a module provides a config entry for the key `$key` and that the value is equal to `$value`.
 
-Creates a mocked composite container instance that simply returns values from the first matching child container.
+`assertModuleHasService($key, $type, $module, $deps)`
 
-`mockEventManager`
+Asserts that a module provides a service with the key `$key` and that it is an instance of `$type`.
+Third-party dependency services may be provided, as `$deps`, in the form of an array of declarations.  
+
+### Mock Helpers
+
+`mockContainer($data)` and `mockContainerFactory()`
+
+These helper methods create mock container instances and mock container factory instances respectively.
+The container mock is a simple implementation that can instantiate and cache services if given callable values.
+The factory mock creates these instances on `make()`.
+
+`mockConfigFactory($data)`
+
+Creates mock config factory instances. The factories use `mockContainer` to create the instances on `make()`.
+
+`mockCompositeContainer($containers)` and `mockCompositeContainerFactory()`
+
+Similar to the previous helper mock methods, these create mock composite containers and factories for them.
+The mock composite container implementation simply returns values from the first matching child container.
+
+`mockEventManager()`
 
 Creates a zero-functionality event manager mock instance. Expectations and method mocking can still be attached to it
 in your test. 
 
-`mockEvent($name, $params)`
+`mockEvent($name, $params)` and `mockEventFactory()`
 
 Creates a mock event instance with the given name (`$name`) and parameters (`$params`).
-
-`mockEventFactory`
-
 Creates a mock event factory instance that creates mock event instances on `make()`.
-
-`mockContainerFactory`
-
-Creates a mock container factory instance that creates mock container instances on `make()`.
-
-`mockCompositeContainerFactory`
-
-Creates a mock composite container factory instance that creates mock composite container instances on `make()`.
-
-`mockConfigFactory`
-
-Creates a mock config factory instance that creates mock container instances on `make()`.
 
 `mockInterface($fqn, $methods)`
 
@@ -74,22 +79,70 @@ methods (`$methods`).
 ## Test Generator
 
 The test generator script is available in your `vendor/bin` directory after installing.
-It is **very* important* to run this script from the module package's root directory.
+It is **very* important* to run this script from the module package's root directory, since the script will attempt to
+read the `config.php` and `services.php` files in that directory, and use them to generate the test case.
 
 ```
 vendor/bin/rcmod-gen-test
 ```
 
-This will scan the module directory for the `config.php` and `services.php` files, read them and generate the test case.
-The namespace and module name used in the test case may be configured using arguments:
-
-```
-vendor/bin/rcmod-gen-test --namespace="RebelCode\Custom\FuncTest" --module="RebelCode\Custom\MyModule"
-```
-
 By default, the generated test case is outputted to the relative `test/functional` directory as `ModuleTest.php`.
-This can also be configured using an argument:
+This may be configured using the `-o` argument. The namespace of the test and the module name are also configurable: 
 
 ```
-vendor/bin/rcmod-gen-test -o "test/unit/GeneratedTest.php"
+vendor/bin/rcmod-gen-test -o "MyTest.php" --namespace="Custom\FuncTest" --module="FooBar\MyModule"
+```
+
+### Service type assertions
+
+The generator can deduce the expected type of a service from the `services.php` file and generate assertions that
+assert whether the service provided by the module is an instance of that type.
+
+This is done by looking at the service's declaration doc comment, i.e. `/** ... */`, and extracting the value of the
+the `@return` tag in the doc comment. The this value is then mapped to the FQN, if necessary, by referring to the `use`
+statements in the file. Aliased `use` statements are also detected.
+
+```php
+<?php
+
+// Sample services.php file
+
+use RebelCode\WordPress\Nonce;
+use Dhii\Event\EventFactory as EF;
+use Psr\Container\ContainerInterface;
+
+return [
+    /**
+     * Works! 
+     *
+     * @return Nonce;
+     */
+    'nonce' =>  function (ContainerInterface $c) {
+       return Nonce();
+    },
+    /**
+     * Alias Works!
+     *
+     * @return EF
+     */
+     'event_factory' => function (ContainerInterface $c) {
+        return EF();
+     },
+     /**
+      * No return tag - this service will not be type-tested
+      *
+      * @return EF
+      */
+      'event_factory_2' => function (ContainerInterface $c) {
+         return EF();
+      },
+      /*
+       * Not a doc comment - this service will not be type-tested
+       *
+       * @return EF
+       */
+      'event_factory_3' => function (ContainerInterface $c) {
+         return EF();
+      },
+];
 ```
