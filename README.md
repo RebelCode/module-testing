@@ -91,10 +91,24 @@ vendor/bin/rcmod-gen-test
 ```
 
 By default, the generated test case is outputted to the relative `test/functional` directory as `ModuleTest.php`.
-This may be configured using the `-o` argument. The namespace of the test and the module name are also configurable: 
+This may be configured using the `-o` argument.
+
+Below it the full list of arguments available:
+
+|  Argument  | Value | Example |
+|------------|-------|---------|
+| `-o` | Path to the file to output to | `-o "test/MyGenTest.php"`       |
+| `--module` | FQN of the module class | `--module="Foobar\MyModule"`    |
+| `--namespace` | The namespace for the generated test | `--namespace="Custom\FuncTest"` |
+| `--mainfile` | The absolute path to the module main file, OR a path relative to the generated test. | `--mainfile="../module.php"` |
+
+**Example:**
 
 ```
-vendor/bin/rcmod-gen-test -o "MyTest.php" --namespace="Custom\FuncTest" --module="FooBar\MyModule"
+vendor/bin/rcmod-gen-test.php -o "test/MyTest.php"
+    --mainfile="../module.php"
+    --namespace="Custom\FuncTest"
+    --module="FooBar\MyModule"
 ```
 
 ## Service type assertions
@@ -149,6 +163,6 @@ return [
 ];
 ```
 
-**Note**: You might need to change the module file path constant value in the generated test to be correct.
-Furthermore, the dependencies of your module's services are not added in the generated tests, so you will need to add
-those first yourself.
+**Note**: After generating, the test might not pass. If your services require other services provided by external
+providers, such as the loader or other modules, then you will need to add mocks for those services in their respective
+tests. There are comments in the generated test to indicate where these declarations should be added.
