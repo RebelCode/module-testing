@@ -3,9 +3,14 @@
 namespace RebelCode\Modular\Testing;
 
 use Dhii\Event\EventFactoryInterface;
+use Dhii\Exception\CreateInvalidArgumentExceptionCapableTrait;
+use Dhii\I18n\StringTranslatingTrait;
+use Dhii\Modular\Module\ModuleInterface;
+use Dhii\Util\Normalization\NormalizeArrayCapableTrait;
 use PHPUnit_Framework_MockObject_MockBuilder as MockBuilder;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\EventManager\EventInterface;
 use Psr\EventManager\EventManagerInterface;
 use RebelCode\Modular\Module\AbstractBaseModule;
@@ -22,6 +27,71 @@ use Xpmock\TestCase;
  */
 class ModuleTestCase extends TestCase
 {
+    /* @since [*next-version*] */
+    use NormalizeArrayCapableTrait;
+
+    /* @since [*next-version*] */
+    use CreateInvalidArgumentExceptionCapableTrait;
+
+    /* @since [*next-version*] */
+    use StringTranslatingTrait;
+
+    /**
+     * Asserts that a module has config with a specific key, and that the value is correct.
+     *
+     * @since [*next-version*]
+     *
+     * @param string                     $key    The config key to check for.
+     * @param mixed                      $value  The config value to compare to.
+     * @param MockObject|ModuleInterface $module The module instance.
+     */
+    protected function assertModuleHasConfig($key, $value, $module)
+    {
+        $container = $module->setup();
+
+        $this->assertTrue(
+            $container->has('{$key}'),
+            'Container does not have config with key "{$key}"'
+        );
+
+        $this->assertEquals(
+            $value,
+            $this->_normalizeArray($container->get($key)),
+            "Container has invalid value for config with key '{$key}'"
+        );
+    }
+
+    /**
+     * Asserts that a module has a service with a specific key and that it's type is correct.
+     *
+     * @since [*next-version*]
+     *
+     * @param string                     $key    The key of the service.
+     * @param string                     $type   The FQN type of the service.
+     * @param MockObject|ModuleInterface $module The module instance.
+     * @param array                      $deps   The dependency service definitions.
+     */
+    protected function assertModuleHasService($key, $type, $module, $deps = [])
+    {
+        $mContainer = $module->setup();
+        $container  = $this->mockCompositeContainer([
+            $mContainer,
+            $this->mockContainer($deps),
+        ]);
+
+        try {
+            $service = $container->get('$key');
+        } catch (NotFoundExceptionInterface $exception) {
+            $this->fail("Module does not have service with key '{$key}'.");
+        }
+
+        $this->assertInstanceOf(
+            $type,
+            $service,
+            "Service '{$key}' is not an instance of `{$type}``."
+        );
+    }
+
     /**
      * Creates and initializes a module that extends {@link AbstractBaseModule}.
      *
