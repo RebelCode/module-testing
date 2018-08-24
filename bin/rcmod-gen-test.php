@@ -57,24 +57,24 @@ function rcmodGenServicesTests()
                 exit(3);
             }
 
+            $type = null;
+
             preg_match('/@return\s([\\w\\d]+)/', $reflect->getDocComment(), $matches);
 
-            if (count($matches) < 2) {
-                continue;
-            }
-
-            $type = $matches[1];
-
-            // Find `use` statement
-            preg_match("/use \\s+ ([\\w\\d\\\\]+ $type);/x", $servicesContent, $matches);
-            // If not found, find aliased `use` statement
-            if (count($matches) === 0) {
-                preg_match("/use \s+ ([\\w\\d\\\\]+) \\s+ as \\s+ $type;/x", $servicesContent, $matches);
-            }
-
-            // If found, use found FQN as type
             if (count($matches) > 1) {
                 $type = $matches[1];
+
+                // Find `use` statement
+                preg_match("/use \\s+ ([\\w\\d\\\\]+ $type);/x", $servicesContent, $matches);
+                // If not found, find aliased `use` statement
+                if (count($matches) === 0) {
+                    preg_match("/use \s+ ([\\w\\d\\\\]+) \\s+ as \\s+ $type;/x", $servicesContent, $matches);
+                }
+
+                // If found, use found FQN as type
+                if (count($matches) > 1) {
+                    $type = $matches[1];
+                }
             }
 
             $testServices[$key] = $type;

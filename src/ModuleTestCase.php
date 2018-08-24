@@ -54,11 +54,13 @@ class ModuleTestCase extends TestCase
             'Container does not have config with key "{$key}"'
         );
 
-        $this->assertEquals(
-            $value,
-            $this->_normalizeArray($container->get($key)),
-            "Container has invalid value for config with key '{$key}'"
-        );
+        if ($value !== null) {
+            $this->assertEquals(
+                $value,
+                $this->_normalizeArray($container->get($key)),
+                "Container has invalid value for config with key '{$key}'"
+            );
+        }
     }
 
     /**
