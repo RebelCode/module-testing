@@ -5,6 +5,14 @@
 A set of tools - such as custom test cases, assertions, mock helpers and class stubs - that aid the testing of
 RebelCode modules. Also includes a test generator for quickly generating tests for modules!
 
+# Installation
+
+Simply install the package with Composer, ideally as a developer dependency.
+
+```
+composer require --dev rebelcode/module-testing
+```
+
 # Custom Test Case
 
 The `ModuleTestCase` is an extended PHPUnit test case that provides all of the helper functionality in this package.
