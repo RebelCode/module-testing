@@ -1,5 +1,5 @@
 {
-    "name": "rebelcode/modular-testing",
+    "name": "rebelcode/module-testing",
     "description": "Tools for testing RebelCode modules.",
     "type": "library",
     "license": "GPL-3.0",
