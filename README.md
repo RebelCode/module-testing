@@ -31,11 +31,11 @@ class MyTest extends ModuleTestCase
 
 # Helper methods
 
-`createModule($fqn, $config)`
+`createModule($moduleFilePath)`
 
-Creates a module instance for the module with the given FQN (`$fqn`) and config (`$config`), as well as mocked config,
-container and composite container factories. The module is also initialized with a mocked event manager and mocked event
-factory, if it requires them.
+Creates a module instance using the module file at a specific path (`$moduleFilePath`).
+This will load the file to get the callback, and invoke it with mocked config, container and composite container
+factories, as well as a mocked event manager and a mocked event factory, should the module require them.
 
 ## Assertion Helpers
 
