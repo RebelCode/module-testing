@@ -83,7 +83,7 @@ class ModuleTestCase extends TestCase
         ]);
 
         try {
-            $service = $container->get('$key');
+            $service = $container->get($key);
         } catch (NotFoundExceptionInterface $exception) {
             $this->fail("Module does not have service with key '{$key}'.");
         }
