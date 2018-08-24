@@ -24,8 +24,14 @@ function rcmodGenServicesTests()
     $moduleFqn  = isset($opts['module']) ? $opts['module'] : 'Module';
     $outputFile = isset($opts['o']) ? $opts['o'] : getcwd().'/test/functional/ModuleTest.php';
 
+    $moduleFile = getcwd() . DIRECTORY_SEPARATOR . 'module.php';
     $configFile = getcwd() . DIRECTORY_SEPARATOR . 'config.php';
     $servicesFile = getcwd() . DIRECTORY_SEPARATOR . 'services.php';
+
+    if (!file_exists($moduleFile)) {
+        fwrite(STDERR, "Module file not found in current directory.\n");
+        exit(2);
+    }
 
     if (!file_exists($configFile)) {
         fwrite(STDERR, "Config file not found in current directory.\n");
@@ -83,10 +89,10 @@ function rcmodGenServicesTests()
         }
     }
 
-    file_put_contents($outputFile, renderServicesTest($namespace, $moduleFqn, $testServices, $config));
+    file_put_contents($outputFile, renderServicesTest($moduleFile, $namespace, $moduleFqn, $testServices, $config));
 }
 
-function renderServicesTest($namespace, $moduleFqn, $services, $config)
+function renderServicesTest($moduleFile, $namespace, $moduleFqn, $services, $config)
 {
     ob_start();
 
@@ -111,11 +117,11 @@ use RebelCode\Modular\Testing\ModuleTestCase;
 class {$moduleShortName}Test extends ModuleTestCase
 {
     /**
-     * The fully qualified name of the module to test.
+     * The path to the module main file.
      *
      * @since [*next-version*]
      */
-    const MODULE_CLASS_FQN = '$moduleFqn';
+    const MODULE_MAIN_FILE_PATH = '${moduleFile}';
     
 EOT;
 
@@ -129,7 +135,7 @@ EOT;
     public function testSetupConfig()
     {
         /* @var \$module MockObject|ModuleInterface */
-        \$module  = \$this->createModule(static::MODULE_CLASS_FQN);
+        \$module  = \$this->createModule(static::MODULE_MAIN_FILE_PATH);
 
 EOT;
         foreach ($configKeys as $key) {
@@ -163,7 +169,7 @@ EOT;
     public function testSetup{$keyCamelCase}()
     {
         /* @var \$module MockObject|ModuleInterface */
-        \$module = \$this->createModule(static::MODULE_CLASS_FQN);
+        \$module = \$this->createModule(static::MODULE_MAIN_FILE_PATH);
         
         \$this->assertModuleHasService('{$key}', '{$type}', \$module, [
             /* Add mocked dependency services here */

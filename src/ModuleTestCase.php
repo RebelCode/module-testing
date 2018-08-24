@@ -95,38 +95,34 @@ class ModuleTestCase extends TestCase
     }
 
     /**
-     * Creates and initializes a module that extends {@link AbstractBaseModule}.
+     * Creates and initializes the module.
+     *
+     * The module must extend {@link AbstractBaseModule}.
      *
      * @since [*next-version*]
      *
      * @see   AbstractBaseModule
      *
-     * @param string $fqn    The fully qualified name of the module class to instantiate.
-     * @param array  $config The module config to initialize with.
+     * @param string $moduleFilePath The path to the module main file.
      *
      * @return MockObject
      */
-    public function createModule($fqn, $config = [])
+    public function createModule($moduleFilePath)
     {
-        $builder = $this->getMockBuilder($fqn);
-        $builder->enableOriginalConstructor();
-        $builder->setConstructorArgs(
-            $config,
-            $this->mockConfigFactory(),
-            $this->mockContainerFactory(),
-            $this->mockCompositeContainerFactory()
+        $container = $this->mockContainer(
+            [
+                'config_factory'              => $this->mockConfigFactory(),
+                'container_factory'           => $this->mockContainerFactory(),
+                'composite_container_factory' => $this->mockCompositeContainerFactory(),
+                'event_manager'               => $this->mockEventManager(),
+                'event_factory'               => $this->mockEventFactory(),
+            ]
         );
 
-        /* @var AbstractBaseModule */
-        $mock    = $builder->getMockForAbstractClass();
-        $reflect = $this->reflect($mock);
+        $callback = require $moduleFilePath;
+        $module   = call_user_func_array($callback, [$container]);
 
-        $reflect->_initModuleEvents(
-            $this->mockEventManager(),
-            $this->mockEventFactory()
-        );
-
-        return $mock;
+        return $module;
     }
 
     /**
