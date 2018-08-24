@@ -148,3 +148,7 @@ return [
       },
 ];
 ```
+
+**Note**: You might need to change the module file path constant value in the generated test to be correct.
+Furthermore, the dependencies of your module's services are not added in the generated tests, so you will need to add
+those first yourself.
