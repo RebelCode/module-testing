@@ -17,7 +17,8 @@ function rcmodGenServicesTests()
     $optind = null;
     $opts = getopt('o:', [
         'namespace:',
-        'module:'
+        'module:',
+        'mainfile:'
     ]);
 
     $namespace  = isset($opts['namespace']) ? $opts['namespace'] : 'RebelCode';
@@ -27,6 +28,10 @@ function rcmodGenServicesTests()
     $moduleFile = getcwd() . DIRECTORY_SEPARATOR . 'module.php';
     $configFile = getcwd() . DIRECTORY_SEPARATOR . 'config.php';
     $servicesFile = getcwd() . DIRECTORY_SEPARATOR . 'services.php';
+
+    $testModuleFile = isset($opts['mainfile'])
+        ? $opts['mainfile']
+        : $moduleFile;
 
     if (!file_exists($moduleFile)) {
         fwrite(STDERR, "Module file not found in current directory.\n");
@@ -89,7 +94,7 @@ function rcmodGenServicesTests()
         }
     }
 
-    file_put_contents($outputFile, renderServicesTest($moduleFile, $namespace, $moduleFqn, $testServices, $config));
+    file_put_contents($outputFile, renderServicesTest($testModuleFile, $namespace, $moduleFqn, $testServices, $config));
 }
 
 function renderServicesTest($moduleFile, $namespace, $moduleFqn, $services, $config)
