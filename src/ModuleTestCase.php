@@ -101,28 +101,26 @@ class ModuleTestCase extends TestCase
      *
      * @see   AbstractBaseModule
      *
-     * @param string   $fqn  The fully qualified name of the module class to instantiate.
-     * @param string   $key  The key of the module.
-     * @param string[] $deps The module's dependencies.
+     * @param string $fqn    The fully qualified name of the module class to instantiate.
+     * @param array  $config The module config to initialize with.
      *
      * @return MockObject
      */
-    public function createModule($fqn, $key = '', $deps = [])
+    public function createModule($fqn, $config = [])
     {
         $builder = $this->getMockBuilder($fqn);
-        $builder->disableOriginalConstructor();
+        $builder->enableOriginalConstructor();
+        $builder->setConstructorArgs(
+            $config,
+            $this->mockConfigFactory(),
+            $this->mockContainerFactory(),
+            $this->mockCompositeContainerFactory()
+        );
 
         /* @var AbstractBaseModule */
         $mock    = $builder->getMockForAbstractClass();
         $reflect = $this->reflect($mock);
 
-        $reflect->_initModule(
-            $key,
-            $deps,
-            $this->mockConfigFactory(),
-            $this->mockContainerFactory(),
-            $this->mockCompositeContainerFactory()
-        );
         $reflect->_initModuleEvents(
             $this->mockEventManager(),
             $this->mockEventFactory()
