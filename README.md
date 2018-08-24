@@ -25,7 +25,7 @@ class MyTest extends ModuleTestCase
 }
 ```
 
-## Helper methods
+# Helper methods
 
 `createModule($fqn, $key, $deps)`
 
@@ -33,7 +33,7 @@ Creates a module instance for the module with the given FQN (`$fqn`), key (`$key
 as mocked config, container and composite container factories. The module is also initialized with a mocked event
 manager and mocked event factory, if it requires them.
 
-### Assertion Helpers
+## Assertion Helpers
 
 `assertModuleHasConfig($key, $value, $module)`
 
@@ -44,7 +44,7 @@ Asserts that a module provides a config entry for the key `$key` and that the va
 Asserts that a module provides a service with the key `$key` and that it is an instance of `$type`.
 Third-party dependency services may be provided, as `$deps`, in the form of an array of declarations.  
 
-### Mock Helpers
+## Mock Helpers
 
 `mockContainer($data)` and `mockContainerFactory()`
 
@@ -76,7 +76,7 @@ Creates a mock event factory instance that creates mock event instances on `make
 Generic mocking utility method for creating a mock instance for a particular interface with the given FQN (`$fqn`) and
 methods (`$methods`).
 
-## Test Generator
+# Test Generator
 
 The test generator script is available in your `vendor/bin` directory after installing.
 It is **very* important* to run this script from the module package's root directory, since the script will attempt to
@@ -93,7 +93,7 @@ This may be configured using the `-o` argument. The namespace of the test and th
 vendor/bin/rcmod-gen-test -o "MyTest.php" --namespace="Custom\FuncTest" --module="FooBar\MyModule"
 ```
 
-### Service type assertions
+## Service type assertions
 
 The generator can deduce the expected type of a service from the `services.php` file and generate assertions that
 assert whether the service provided by the module is an instance of that type.
