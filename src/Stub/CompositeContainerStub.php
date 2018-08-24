@@ -5,6 +5,8 @@ namespace RebelCode\Modular\Testing\Stub;
 use Dhii\Data\Container\Exception\NotFoundException;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use stdClass;
+use Traversable;
 
 /**
  * A simple stub composite container.
@@ -18,7 +20,7 @@ class CompositeContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @var ContainerInterface[]
+     * @var ContainerInterface[]|stdClass|Traversable
      */
     protected $containers;
 
@@ -27,9 +29,9 @@ class CompositeContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param array $containers
+     * @param ContainerInterface[]|stdClass|Traversable $containers
      */
-    public function __construct(array $containers = [])
+    public function __construct($containers = [])
     {
         $this->containers = $containers;
     }

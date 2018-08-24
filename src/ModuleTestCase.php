@@ -2,6 +2,7 @@
 
 namespace RebelCode\Modular\Testing;
 
+use ArrayAccess;
 use Dhii\Event\EventFactoryInterface;
 use Dhii\Exception\CreateInvalidArgumentExceptionCapableTrait;
 use Dhii\I18n\StringTranslatingTrait;
@@ -130,11 +131,11 @@ class ModuleTestCase extends TestCase
      *
      * @since [*next-version*]
      *
-     * @param array $definitions The service definitions.
+     * @param array|stdClass|ArrayAccess $definitions The service definitions.
      *
      * @return DiContainerStub
      */
-    public function mockContainer(array $definitions = [])
+    public function mockContainer($definitions = [])
     {
         return new DiContainerStub($definitions);
     }

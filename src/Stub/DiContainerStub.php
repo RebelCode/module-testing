@@ -2,8 +2,10 @@
 
 namespace RebelCode\Modular\Testing\Stub;
 
+use ArrayAccess;
 use Dhii\Data\Container\Exception\NotFoundException;
 use Psr\Container\ContainerInterface;
+use stdClass;
 
 /**
  * A simple stub implementation for a DI container.
@@ -17,7 +19,7 @@ class DiContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @var array
+     * @var array|stdClass|ArrayAccess
      */
     protected $definitions = [];
 
@@ -26,7 +28,7 @@ class DiContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @var array
+     * @var array|stdClass|ArrayAccess
      */
     protected $services = [];
 
@@ -35,9 +37,9 @@ class DiContainerStub implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param array $definitions The service definitions.
+     * @param array|stdClass|ArrayAccess $definitions The service definitions.
      */
-    public function __construct(array $definitions = [])
+    public function __construct($definitions = [])
     {
         $this->definitions = $definitions;
     }
