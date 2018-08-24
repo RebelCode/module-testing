@@ -31,11 +31,11 @@ class MyTest extends ModuleTestCase
 
 # Helper methods
 
-`createModule($fqn, $key, $deps)`
+`createModule($fqn, $config)`
 
-Creates a module instance for the module with the given FQN (`$fqn`), key (`$key`) and dependencies (`$deps`), as well
-as mocked config, container and composite container factories. The module is also initialized with a mocked event
-manager and mocked event factory, if it requires them.
+Creates a module instance for the module with the given FQN (`$fqn`) and config (`$config`), as well as mocked config,
+container and composite container factories. The module is also initialized with a mocked event manager and mocked event
+factory, if it requires them.
 
 ## Assertion Helpers
 
