@@ -122,12 +122,15 @@ use RebelCode\Modular\Testing\ModuleTestCase;
 class {$moduleShortName}Test extends ModuleTestCase
 {
     /**
-     * The path to the module main file.
+     * Returns the path to the module main file.
      *
      * @since [*next-version*]
      */
-    const MODULE_MAIN_FILE_PATH = '${moduleFile}';
-    
+    public function getModuleFilePath()
+    {
+        return __DIR__ . '/${moduleFile}';
+    }
+
 EOT;
 
     if (count($configKeys) > 0) :
@@ -140,7 +143,7 @@ EOT;
     public function testSetupConfig()
     {
         /* @var \$module MockObject|ModuleInterface */
-        \$module  = \$this->createModule(static::MODULE_MAIN_FILE_PATH);
+        \$module  = \$this->createModule(\$this->getModuleFilePath());
 
 EOT;
         foreach ($configKeys as $key) {
@@ -174,7 +177,7 @@ EOT;
     public function testSetup{$keyCamelCase}()
     {
         /* @var \$module MockObject|ModuleInterface */
-        \$module = \$this->createModule(static::MODULE_MAIN_FILE_PATH);
+        \$module = \$this->createModule(\$this->getModuleFilePath());
         
         \$this->assertModuleHasService('{$key}', '{$type}', \$module, [
             /* Add mocked dependency services here */
