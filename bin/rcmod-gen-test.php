@@ -125,6 +125,8 @@ class {$moduleShortName}Test extends ModuleTestCase
      * Returns the path to the module main file.
      *
      * @since [*next-version*]
+     *
+     * @return string The file path.
      */
     public function getModuleFilePath()
     {
