@@ -113,9 +113,12 @@ namespace $namespace;
 use Dhii\Modular\Module\ModuleInterface;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use RebelCode\Modular\Testing\ModuleTestCase;
+use ${moduleFqn};
 
 /**
  * Tests {@link {$moduleFqn}}.
+ *
+ * @see {$moduleShortName}
  *
  * @since [*next-version*]
  */
