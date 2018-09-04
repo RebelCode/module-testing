@@ -15,7 +15,7 @@
         "php": "^5.4 | ^7.0",
         "ptrofimov/xpmock": "^1.1",
         "phpunit/phpunit": "^4.8",
-        "rebelcode/modular": "^0.1-alpha1",
+        "rebelcode/modular": "^0.2",
         "dhii/container-helper-base": "^0.1-alpha7",
         "dhii/data-container-interface": "^0.2-alpha3",
         "dhii/data-container-base": "^0.1-alpha2",
