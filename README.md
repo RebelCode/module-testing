@@ -32,7 +32,7 @@ class MyTest extends ModuleTestCase
 # Helper methods
 
 ```
-$module = createModule($moduleFilePath);
+$module = $this->createModule($moduleFilePath);
 ```
 
 Creates a module instance using the module file at a specific path (`$moduleFilePath`).
@@ -42,13 +42,13 @@ factories, as well as a mocked event manager and a mocked event factory, should 
 ## Assertion Helpers
 
 ```
-assertModuleHasConfig($key, $value, $module);
+$this->assertModuleHasConfig($key, $value, $module);
 ```
 
 Asserts that a module provides a config entry for the key `$key` and that the value is equal to `$value`.
 
 ```
-assertModuleHasService($key, $type, $module, $deps);
+$this->assertModuleHasService($key, $type, $module, $deps);
 ```
 
 Asserts that a module provides a service with the key `$key` and that it is an instance of `$type`.
@@ -57,8 +57,8 @@ Third-party dependency services may be provided, as `$deps`, in the form of an a
 ## Mock Helpers
 
 ```
-$factory   = mockContainerFactory();
-$container = mockContainer($data);
+$factory   = $this->mockContainerFactory();
+$container = $this->mockContainer($data);
 ```
 
 These helper methods create mock container instances and mock container factory instances respectively.
@@ -66,38 +66,38 @@ The container mock is a simple implementation that can instantiate and cache ser
 The factory mock creates these instances on `make()`.
 
 ```
-$factory  = mockCompositeContainerFactory();
-$compCntr = mockCompositeContainer($childCntrs);
+$factory  = $this->mockCompositeContainerFactory();
+$compCntr = $this->mockCompositeContainer($childCntrs);
 ```
 
 Similar to the previous helper mock methods, these create mock composite containers and factories for them.
 The mock composite container implementation simply returns values from the first matching child container.
 
 ```
-$config  = mockConfig($data);
-$factory = mockConfigFactory($config);
+$config  = $this->mockConfig($data);
+$factory = $this->mockConfigFactory($config);
 ```
 
 Creates mock config instances using the given `$data`. Any child maps will be wrapped into configs as well on `get()`.
 Creates mock config factory instances. The data can be passed in the `$config['data']`.
 
 ```
-$eventMngr = mockEventManager();
+$eventMngr = $this->mockEventManager();
 ```
 
 Creates a zero-functionality event manager mock instance. Expectations and method mocking can still be attached to it
 in your test. 
 
 ```
-$event    = mockEvent($name, $params);
-$evtFctry = mockEventFactory();
+$event    = $this->mockEvent($name, $params);
+$evtFctry = $this->mockEventFactory();
 ```
 
 Creates a mock event instance with the given name (`$name`) and parameters (`$params`).
 Creates a mock event factory instance that creates mock event instances on `make()`.
 
 ```
-$mock = mockInterface($fqn, $methods);
+$mock = $this->mockInterface($fqn, $methods);
 ```
 
 Generic mocking utility method for creating a mock instance for a particular interface with the given FQN (`$fqn`) and
