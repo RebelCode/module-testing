@@ -133,7 +133,7 @@ class ModuleTestCase extends TestCase
      *
      * @param array|stdClass|ArrayAccess $definitions The service definitions.
      *
-     * @return DiContainerStub
+     * @return ContainerInterface
      */
     public function mockContainer($definitions = [])
     {
@@ -147,7 +147,7 @@ class ModuleTestCase extends TestCase
      *
      * @param array|stdClass|Traversable $containers The list of children containers.
      *
-     * @return MockObject|ContainerInterface
+     * @return ContainerInterface
      */
     public function mockCompositeContainer($containers)
     {
