@@ -3,8 +3,11 @@
 namespace RebelCode\Modular\Testing\Stub;
 
 use ArrayAccess;
+use ArrayIterator;
+use ArrayObject;
 use Dhii\Config\ConfigInterface;
 use Dhii\Data\Container\Exception\NotFoundException;
+use IteratorAggregate;
 use stdClass;
 use Traversable;
 
@@ -13,7 +16,7 @@ use Traversable;
  *
  * @since [*next-version*]
  */
-class ConfigStub implements ConfigInterface
+class ConfigStub implements ConfigInterface, IteratorAggregate
 {
     /**
      * The service definitions.
@@ -70,5 +73,19 @@ class ConfigStub implements ConfigInterface
     public function has($key)
     {
         return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @since [*next-version*]
+     */
+    public function getIterator()
+    {
+        if ($this->data instanceof Traversable) {
+            return $this->data;
+        }
+
+        return new ArrayObject($this->data);
     }
 }
