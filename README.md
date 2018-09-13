@@ -74,10 +74,12 @@ Similar to the previous helper mock methods, these create mock composite contain
 The mock composite container implementation simply returns values from the first matching child container.
 
 ```
-$factory = mockConfigFactory($data);
+$config  = mockConfig($data);
+$factory = mockConfigFactory($config);
 ```
 
-Creates mock config factory instances. The factories use `mockContainer` to create the instances on `make()`.
+Creates mock config instances using the given `$data`. Any child maps will be wrapped into configs as well on `get()`.
+Creates mock config factory instances. The data can be passed in the `$config['data']`.
 
 ```
 $eventMngr = mockEventManager();
