@@ -3,11 +3,21 @@
 namespace RebelCode\Modular\Testing\Stub;
 
 use ArrayAccess;
-use ArrayIterator;
 use ArrayObject;
 use Dhii\Config\ConfigInterface;
+use Dhii\Data\Container\ContainerGetCapableTrait;
+use Dhii\Data\Container\ContainerHasCapableTrait;
+use Dhii\Data\Container\CreateContainerExceptionCapableTrait;
+use Dhii\Data\Container\CreateNotFoundExceptionCapableTrait;
 use Dhii\Data\Container\Exception\NotFoundException;
+use Dhii\Data\Container\NormalizeKeyCapableTrait;
+use Dhii\Exception\CreateInvalidArgumentExceptionCapableTrait;
+use Dhii\Exception\CreateOutOfRangeExceptionCapableTrait;
+use Dhii\I18n\StringTranslatingTrait;
+use Dhii\Util\Normalization\NormalizeStringCapableTrait;
 use IteratorAggregate;
+use Psr\Container\ContainerInterface;
+use RuntimeException;
 use stdClass;
 use Traversable;
 
@@ -18,12 +28,39 @@ use Traversable;
  */
 class ConfigStub implements ConfigInterface, IteratorAggregate
 {
+    /* @since [*next-version*] */
+    use ContainerGetCapableTrait;
+
+    /* @since [*next-version*] */
+    use ContainerHasCapableTrait;
+
+    /* @since [*next-version*] */
+    use NormalizeKeyCapableTrait;
+
+    /* @since [*next-version*] */
+    use NormalizeStringCapableTrait;
+
+    /* @since [*next-version*] */
+    use CreateInvalidArgumentExceptionCapableTrait;
+
+    /* @since [*next-version*] */
+    use CreateOutOfRangeExceptionCapableTrait;
+
+    /* @since [*next-version*] */
+    use CreateContainerExceptionCapableTrait;
+
+    /* @since [*next-version*] */
+    use CreateNotFoundExceptionCapableTrait;
+
+    /* @since [*next-version*] */
+    use StringTranslatingTrait;
+
     /**
      * The service definitions.
      *
      * @since [*next-version*]
      *
-     * @var array|stdClass|ArrayAccess
+     * @var array|stdClass|ArrayAccess|ContainerInterface
      */
     protected $data = [];
 
@@ -32,7 +69,7 @@ class ConfigStub implements ConfigInterface, IteratorAggregate
      *
      * @since [*next-version*]
      *
-     * @param array|stdClass|ArrayAccess $data The service definitions.
+     * @param array|stdClass|ArrayAccess|ContainerInterface $data The service definitions.
      */
     public function __construct($data = [])
     {
@@ -52,10 +89,7 @@ class ConfigStub implements ConfigInterface, IteratorAggregate
             );
         }
 
-        // Read appropriately, either via array access or object property access
-        $result = ($this->data instanceof stdClass)
-            ? $this->data->$key
-            : $this->data[$key];
+        $result = $this->_containerGet($this->data, $key);
 
         // Wrap composite results in config instances
         if (is_array($result) || $result instanceof stdClass || $result instanceof Traversable) {
@@ -72,7 +106,7 @@ class ConfigStub implements ConfigInterface, IteratorAggregate
      */
     public function has($key)
     {
-        return array_key_exists($key, $this->data);
+        return $this->_containerHas($this->data, $key);
     }
 
     /**
@@ -84,6 +118,10 @@ class ConfigStub implements ConfigInterface, IteratorAggregate
     {
         if ($this->data instanceof Traversable) {
             return $this->data;
+        }
+
+        if ($this->data instanceof ContainerInterface) {
+            throw new RuntimeException('Cannot iterator config - the internal data is a container.');
         }
 
         return new ArrayObject($this->data);
