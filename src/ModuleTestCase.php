@@ -16,6 +16,7 @@ use Psr\EventManager\EventInterface;
 use Psr\EventManager\EventManagerInterface;
 use RebelCode\Modular\Module\AbstractBaseModule;
 use RebelCode\Modular\Testing\Stub\CompositeContainerStub;
+use RebelCode\Modular\Testing\Stub\ConfigStub;
 use RebelCode\Modular\Testing\Stub\DiContainerStub;
 use stdClass;
 use Traversable;
@@ -155,6 +156,20 @@ class ModuleTestCase extends TestCase
     }
 
     /**
+     * Creates a mock config instance.
+     *
+     * @since [*next-version*]
+     *
+     * @param array|stdClass|ArrayAccess $data The config data.
+     *
+     * @return ConfigStub
+     */
+    public function mockConfig($data)
+    {
+        return new ConfigStub($data);
+    }
+
+    /**
      * Creates a mock event manager instance.
      *
      * @since [*next-version*]
@@ -264,7 +279,7 @@ class ModuleTestCase extends TestCase
         $mock = $this->mockInterface('Dhii\Config\ConfigFactoryInterface', ['make']);
 
         $mock->method('make')->willReturnCallback(function ($config = null) {
-            return $this->mockContainer(
+            return $this->mockConfig(
                 isset($config['data']) ? $config['data'] : []
             );
         });
