@@ -52,8 +52,8 @@ class ModuleTestCase extends TestCase
         $container = $module->setup();
 
         $this->assertTrue(
-            $container->has('{$key}'),
-            'Container does not have config with key "{$key}"'
+            $container->has($key),
+            "Container does not have config with key '{$key}'"
         );
 
         if ($value !== null) {
