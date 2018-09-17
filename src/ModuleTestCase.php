@@ -43,11 +43,11 @@ class ModuleTestCase extends TestCase
      *
      * @since [*next-version*]
      *
+     * @param MockObject|ModuleInterface $module The module instance.
      * @param string                     $key    The config key to check for.
      * @param mixed                      $value  The config value to compare to.
-     * @param MockObject|ModuleInterface $module The module instance.
      */
-    protected function assertModuleHasConfig($key, $value, $module)
+    protected function assertModuleHasConfig($module, $key, $value)
     {
         $container = $module->setup();
 
@@ -57,9 +57,10 @@ class ModuleTestCase extends TestCase
         );
 
         if ($value !== null) {
+            $actual = $container->get($key);
             $this->assertEquals(
                 $value,
-                $this->_normalizeArray($container->get($key)),
+                ($actual instanceof ConfigStub) ? $this->_normalizeArray($actual) : $actual,
                 "Container has invalid value for config with key '{$key}'"
             );
         }
