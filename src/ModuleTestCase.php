@@ -70,12 +70,14 @@ class ModuleTestCase extends TestCase
      *
      * @since [*next-version*]
      *
-     * @param string                     $key    The key of the service.
-     * @param string                     $type   The FQN type of the service.
      * @param MockObject|ModuleInterface $module The module instance.
+     * @param string                     $key    The key of the service.
+     * @param string|null                $type   The FQN type of the service, or null to skip type-checking.
      * @param array                      $deps   The dependency service definitions.
+     *
+     * @return mixed The service, if the module has it in its setup container.
      */
-    protected function assertModuleHasService($key, $type, $module, $deps = [])
+    protected function assertModuleHasService($module, $key, $type, $deps = [])
     {
         $mContainer = $module->setup();
         $container  = $this->mockCompositeContainer([
@@ -87,13 +89,27 @@ class ModuleTestCase extends TestCase
             $service = $container->get($key);
         } catch (NotFoundExceptionInterface $exception) {
             $this->fail("Module does not have service with key '{$key}' - {$exception->getMessage()}");
+
+            return null;
         }
 
-        $this->assertInstanceOf(
-            $type,
-            $service,
-            "Service '{$key}' is not an instance of `{$type}``."
-        );
+        if ($type !== null) {
+            if (interface_exists($type) || class_exists($type)) {
+                $this->assertInstanceOf(
+                    $type,
+                    $service,
+                    "Service '{$key}' is not an instance of `{$type}`."
+                );
+            } else {
+                $this->assertInternalType(
+                    $type,
+                    $service,
+                    "Service '{key}' is not a `{$type}` value."
+                );
+            }
+        }
+
+        return $service;
     }
 
     /**
