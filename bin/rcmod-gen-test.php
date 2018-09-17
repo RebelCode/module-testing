@@ -156,9 +156,9 @@ EOT;
             echo <<<EOT
 
         \$this->assertModuleHasConfig(
+            \$module,
             '{$key}',
-            {$val},
-            \$module
+            {$val}
         );
 EOT;
         }
@@ -184,7 +184,7 @@ EOT;
         /* @var \$module MockObject|ModuleInterface */
         \$module = \$this->createModule(\$this->getModuleFilePath());
         
-        \$this->assertModuleHasService('{$key}', '{$type}', \$module, [
+        \$this->assertModuleHasService(\$module, '{$key}', '{$type}', [
             /* Add mocked dependency services here */
         ]);
     }
