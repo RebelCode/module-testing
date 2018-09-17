@@ -76,7 +76,7 @@ function rcmodGenServicesTests()
                 $type = $matches[1];
 
                 // Find `use` statement
-                preg_match("/use \\s+ ([\\w\\d\\\\]+ $type);/x", $servicesContent, $matches);
+                preg_match("/use \\s+ ([\\w\\d\\\\]+ \\$type);/x", $servicesContent, $matches);
                 // If not found, find aliased `use` statement
                 if (count($matches) === 0) {
                     preg_match("/use \s+ ([\\w\\d\\\\]+) \\s+ as \\s+ $type;/x", $servicesContent, $matches);
