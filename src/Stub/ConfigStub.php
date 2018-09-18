@@ -89,11 +89,18 @@ class ConfigStub implements ConfigInterface, IteratorAggregate
             );
         }
 
-        $result = $this->_containerGet($this->data, $key);
+        $parts = explode('/', $key);
+        $head  = array_shift($parts);
+
+        $result = $this->_containerGet($this->data, $head);
 
         // Wrap composite results in config instances
         if (is_array($result) || $result instanceof stdClass || $result instanceof Traversable) {
             $result = new ConfigStub($result);
+        }
+
+        if ($result instanceof ContainerInterface && count($parts) > 0) {
+            return $result->get(implode('/', $parts));
         }
 
         return $result;
@@ -106,7 +113,10 @@ class ConfigStub implements ConfigInterface, IteratorAggregate
      */
     public function has($key)
     {
-        return $this->_containerHas($this->data, $key);
+        $parts = explode('/', $key);
+        $head  = array_shift($parts);
+
+        return $this->_containerHas($this->data, $head);
     }
 
     /**
