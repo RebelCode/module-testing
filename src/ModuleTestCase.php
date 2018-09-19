@@ -82,8 +82,8 @@ class ModuleTestCase extends TestCase
     {
         $mContainer = $module->setup();
         $container  = $this->mockCompositeContainer([
-            $mContainer,
             $this->mockContainer($deps),
+            $mContainer,
         ]);
 
         try {
