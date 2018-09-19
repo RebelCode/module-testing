@@ -124,7 +124,7 @@ class ModuleTestCase extends TestCase
      *
      * @param string $moduleFilePath The path to the module main file.
      *
-     * @return MockObject
+     * @return MockObject|ModuleInterface
      */
     public function createModule($moduleFilePath)
     {
