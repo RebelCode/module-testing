@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-$autoloadFile = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+$autoloadFile = getcwd() . '/vendor/autoload.php';
 
 if (!file_exists($autoloadFile)) {
     fwrite(STDERR, 'Current directory is not a Composer package root directory.');
@@ -95,6 +95,8 @@ function rcmodGenServicesTests()
     }
 
     file_put_contents($outputFile, renderServicesTest($testModuleFile, $namespace, $moduleFqn, $testServices, $config));
+
+    system(getcwd() . 'vendor/bin/php-cs-fixer fix -vvv ' . $outputFile);
 }
 
 function renderServicesTest($moduleFile, $namespace, $moduleFqn, $services, $config)
@@ -184,9 +186,14 @@ EOT;
         /* @var \$module MockObject|ModuleInterface */
         \$module = \$this->createModule(\$this->getModuleFilePath());
         
-        \$this->assertModuleHasService(\$module, '{$key}', '{$type}', [
-            /* Add mocked dependency services here */
-        ]);
+        \$this->assertModuleHasService(
+            \$module,
+            '{$key}',
+            '{$type}',
+            [
+                /* Add mocked dependency services here */
+            ]
+        );
     }
 EOT;
     endforeach;
