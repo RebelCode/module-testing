@@ -195,6 +195,17 @@ EOT;
             ]
         );
     }
+    
+    /**
+     * Tests the module's run method.
+     *
+     * @since [*next-version*]
+     */
+    public function testRun()
+    {
+        /* ... */
+    }
+
 EOT;
     endforeach;
 
